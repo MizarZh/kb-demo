@@ -3,6 +3,7 @@ from mistletoe.block_token import BlockToken, BlockCode, CodeFence
 from mistletoe.html_renderer import HtmlRenderer
 from mistletoe.ast_renderer import AstRenderer
 from code_run_renderer import CodeRunningRenderer
+from wrapper import HTML_wrapper
 # from code_run_renderer import CodeRunningRenderer
 
 
@@ -27,4 +28,6 @@ def render_ast(doc: Document):
 def render_mpm(doc: Document):
     renderer = CodeRunningRenderer()
     html = renderer.render(doc)
+    html = HTML_wrapper(html)
     print(html)
+    return html
