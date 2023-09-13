@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kb-demo"
+authors = [{ name = "MizarZh", email = "mizarz314159@outlook.com" }]
+description = "Just a demo"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["data app"]
+license = { text = "GNU GPL 3.0" }
+classifiers = ["Framework :: Fastapi", "Programming Language :: Python :: 3"]
+dependencies = ["fastapi", "mistletoe"]
+dynamic = ["version"]
