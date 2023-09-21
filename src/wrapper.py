@@ -9,6 +9,9 @@ def HTML_wrapper(html_raw: str):
   <body>
   <py-config type="toml">
     packages = ["numpy", "matplotlib"]
+    [[fetch]]
+    files = ['test.py']
+    from = '../static/'
   </py-config>
   <div id="plot"></div>
 '''
