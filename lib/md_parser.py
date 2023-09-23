@@ -2,8 +2,7 @@ from mistletoe import Document
 from mistletoe.block_token import BlockToken, BlockCode, CodeFence
 from mistletoe.html_renderer import HtmlRenderer
 from mistletoe.ast_renderer import AstRenderer
-from .code_run_renderer import CodeRunningRenderer
-from .wrapper import HTML_wrapper
+from code_run_renderer import CodeRunningRenderer
 
 def get_markdown_document(path: str):
     f = open(path)
@@ -21,12 +20,6 @@ def render_ast(doc: Document):
     renderer = AstRenderer()
     html = renderer.render(doc)
     print(html)
-
-def render_mpm(doc: Document):
-    renderer = CodeRunningRenderer()
-    html = renderer.render(doc)
-    html = HTML_wrapper(html)
-    return html
 
 def markdown2html(path: str):
     f = open(path)
