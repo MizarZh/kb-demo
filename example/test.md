@@ -11,7 +11,7 @@ some text
 code block test
 ```
 
-```python-run
+```python-frontend
 import matplotlib.pyplot as plt
 import numpy as np
 from test import test_run
@@ -22,6 +22,14 @@ fig, ax = plt.subplots()
 ax.scatter(x, y)
 display(fig, target="plot")
 test_run()
+```
+
+```python-frontend
+print('a')
+```
+
+```python-frontend
+print('b')
 ```
 
 > quote
