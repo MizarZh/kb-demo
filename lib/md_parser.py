@@ -2,7 +2,7 @@ from mistletoe import Document
 from mistletoe.block_token import BlockToken, BlockCode, CodeFence
 from mistletoe.html_renderer import HtmlRenderer
 from mistletoe.ast_renderer import AstRenderer
-from code_run_renderer import CodeRunningRenderer
+from lib.code_run_renderer import CodeRunningRenderer
 
 def get_markdown_document(path: str):
     f = open(path)
