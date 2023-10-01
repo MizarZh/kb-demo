@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
-app.mount('/static/example/', StaticFiles(directory="./example"), name="example")
+app.mount('/static/', StaticFiles(directory="./example"), name="example")
 
 @app.get("/", response_class=HTMLResponse)
 async def root():

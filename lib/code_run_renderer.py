@@ -34,13 +34,16 @@ class CodeRunningRenderer(HtmlRenderer):
                 inner_ast_tree = ast.parse(inner)
                 for node in ast.walk(inner_ast_tree):
                     if isinstance(node, ast.Import):
-                        for x in node.names:
-                            self.abs_import_recognize(x.name.split('.')[0])
-                    elif isinstance(node, ast.ImportFrom):
-                        # if it's not relative, then it's same case as before
+                        # if it's not relative, then we need to identify where it comes from
+                        # from file, stdlib or PyPI
+                        # considering adding more function to whl?
                         # if it's relative, leave it be, let the interpreter handle it
+                        for x in node.names:
+                            if x.name[0] != '.':
+                                self.abs_import_recognize(x.name)
+                    elif isinstance(node, ast.ImportFrom):
                         if node.module[0] != '.':
-                            self.abs_import_recognize(node.module.split('.')[0])
+                            self.abs_import_recognize(node.module)
         # Backend running code, default running mode
         # 'backend' in code_block_parameter
         else:
@@ -83,12 +86,24 @@ class CodeRunningRenderer(HtmlRenderer):
             </html>
             '''.format(packages=self.imports, fetch = fetch_block, doc = doc)
 
-    def abs_import_recognize(self, name):
-        # .split('.')[0] is to get out the name of the outermost package
-        # pkg_name not null, not in the local directory of the same level
-        # and not in stdlib, can be added to imports
-        print(self.local_dire_tree)
-        if name != ''  \
-                and name not in self.local_dire_tree[to_posix_path(pyscript_local_root)] \
-                and name not in self.stdlib_list:
-            self.imports.append(name)
+    def abs_import_recognize(self, name: str):
+        name_list = name.split('.')
+        name_path = name.replace('.', '/')
+        name_path_without_last = '/'.join(name_list[:-1])
+        import_append_flag = True
+        if name != '':
+            # path referrs to a module with __init__.py
+            if name_path in self.local_dire_tree:
+                if '__init__.py' in self.local_dire_tree[name_path]:
+                    import_append_flag = False
+            # path referrs to a file
+            elif name_path_without_last in self.local_dire_tree:
+                if name_list[-1] + '.py' in self.local_dire_tree[name_path_without_last]:
+                    import_append_flag = False
+            # this path is not in the directory
+            else:
+                # if module is in stdlib
+                if name_list[0] in self.stdlib_list:
+                    import_append_flag = False
+            if import_append_flag:
+                self.imports.append(name_list[0]) # get outermost package

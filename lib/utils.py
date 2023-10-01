@@ -3,10 +3,13 @@ import os
 from pathlib import PurePath
 
 def gen_dire_tree(path: str):
+    current_cwd = os.getcwd()
     directory_dict = {}
-    for root, _, files in os.walk(path):
+    os.chdir(path)
+    for root, _, files in os.walk('.'):
         P_root = PurePath(root)
         directory_dict[P_root.as_posix()] = files
+    os.chdir(current_cwd)
     return directory_dict
 
 def gen_stdlib_list(version: str):
