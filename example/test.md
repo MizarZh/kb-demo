@@ -14,7 +14,10 @@ code block test
 ```python-frontend
 import matplotlib.pyplot as plt
 import numpy as np
-from test import test_run
+import os
+import astropy as ap
+# from test import test_run
+from lib.test import test_run
 
 x = np.random.randn(1000)
 y = np.random.randn(1000)
