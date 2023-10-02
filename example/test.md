@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import astropy as ap
+from first_layer import print_first_layer
 from lib.test import test_run
 from lib2.test2 import test_run2
 
@@ -26,6 +27,7 @@ ax.scatter(x, y)
 display(fig, target="plot")
 test_run()
 test_run2()
+print_first_layer()
 ```
 
 ```python-frontend

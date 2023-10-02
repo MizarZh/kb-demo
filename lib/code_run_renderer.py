@@ -60,7 +60,7 @@ class CodeRunningRenderer(HtmlRenderer):
         fetch_block = []
         for folder in self.local_dire_tree:
             fetch_block.append(
-                '''
+            '''
             [[fetch]]
             from = "{path}"
             files = {files}
@@ -92,6 +92,14 @@ class CodeRunningRenderer(HtmlRenderer):
         name_path_without_last = '/'.join(name_list[:-1])
         import_append_flag = True
         if name != '':
+            # first layer
+            if len(name_list) == 1:
+                # first layer of lib
+                if name in self.local_dire_tree and '__init__.py' in self.local_dire_tree[name]:
+                    import_append_flag = False
+                # first layer of file
+                elif name + '.py' in self.local_dire_tree['.']:
+                    import_append_flag = False
             # path referrs to a module with __init__.py
             if name_path in self.local_dire_tree:
                 if '__init__.py' in self.local_dire_tree[name_path]:
@@ -101,9 +109,8 @@ class CodeRunningRenderer(HtmlRenderer):
                 if name_list[-1] + '.py' in self.local_dire_tree[name_path_without_last]:
                     import_append_flag = False
             # this path is not in the directory
-            else:
-                # if module is in stdlib
-                if name_list[0] in self.stdlib_list:
+            elif name_list[0] in self.stdlib_list:
                     import_append_flag = False
+                # if module is in stdlib
             if import_append_flag:
                 self.imports.append(name_list[0]) # get outermost package
