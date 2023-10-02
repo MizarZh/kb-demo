@@ -2,6 +2,7 @@ import html
 from mistletoe.block_token import BlockToken, BlockCode
 from mistletoe.html_renderer import HtmlRenderer
 from mistletoe import block_token
+from mistletoe.latex_renderer import LaTeXRenderer
 import ast
 from .config import pyscript_local_root, pyscript_from, python_version, pyscript_path
 from .utils import gen_dire_tree, gen_stdlib_list, to_posix_path
@@ -54,6 +55,7 @@ class CodeRunningRenderer(HtmlRenderer):
         self.footnotes.update(token.footnotes)
         inner = '\n'.join([self.render(child) for child in token.children])
         doc = '{}\n'.format(inner) if inner else ''
+        print(self.wrapper(doc))
         return self.wrapper(doc)
 
     def wrapper(self, doc: str) -> str:
@@ -83,8 +85,9 @@ class CodeRunningRenderer(HtmlRenderer):
             <div id="plot"></div>
             {doc}
             </body>
+            {mathjax}
             </html>
-            '''.format(packages=self.imports, fetch = fetch_block, doc = doc)
+            '''.format(packages=self.imports, fetch = fetch_block, doc = doc, mathjax = self.mathjax_settings())
 
     def abs_import_recognize(self, name: str):
         name_list = name.split('.')
@@ -114,3 +117,16 @@ class CodeRunningRenderer(HtmlRenderer):
                 # if module is in stdlib
             if import_append_flag:
                 self.imports.append(name_list[0]) # get outermost package
+    
+    def mathjax_settings(self):
+        return '''
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            <script>
+            MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+            };
+            </script>
+            '''

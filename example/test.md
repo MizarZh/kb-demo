@@ -38,7 +38,53 @@ print('a')
 print('b')
 ```
 
+$$
+\begin{align}
+multiline \newline
+a&=bc \newline
+c&=ed \alpha
+\end{align}
+$$
+
+What happend to the $inline$ eq is that they are scared.
+
 > quote
 > 
 > Great - Sun Tzu
 
+<details open>
+  <summary>Hello</summary>
+  World!
+</details>
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
+
+block
